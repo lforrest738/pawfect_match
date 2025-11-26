@@ -18,39 +18,26 @@ st.markdown("""
         background-color: #f3f4f6;
     }
     
-    /* Responsive Main Container */
-    .responsive-container {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 2rem;
-        background: white;
+    /* Main Content Container (The "Mobile App" Card) */
+    .block-container {
+        max-width: 550px; /* Mobile width constraint */
+        padding: 2rem 2rem 4rem 2rem; /* Top, Right, Bottom, Left */
+        background-color: white;
         border-radius: 24px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-        min-height: 80vh;
-        display: flex;
-        flex-direction: column;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        margin-top: 2rem;
     }
     
     @media (max-width: 500px) {
-        .responsive-container {
+        .block-container {
             padding: 1rem;
+            margin-top: 0;
             border-radius: 0;
             box-shadow: none;
-            background: transparent;
         }
     }
 
     /* Custom Navigation Bar */
-    .nav-button {
-        border-radius: 15px;
-        border: none;
-        background: transparent;
-        color: #6b7280;
-        font-weight: 600;
-        width: 100%;
-        transition: all 0.3s;
-    }
-    /* Streamlit button override for nav */
     div[data-testid="column"] > div > div > div > div > .stButton > button {
         border-radius: 12px;
         border: none;
@@ -135,7 +122,7 @@ st.markdown("""
 
 # --- INITIALIZE SESSION STATE ---
 
-# Expanded Data Set (20 Animals)
+# Expanded Data Set (20 Animals) with Fixed Images
 if 'pets_data' not in st.session_state:
     st.session_state.pets_data = [
         {"id": 1, "name": "Barnaby", "age": "2 yrs", "species": "Dog", "breed": "Golden Retriever Mix", "distance": 2, "location": "Belfast City Center", "tags": ["Hiker", "Friendly"], "bio": "Looking for a hiking buddy for Cave Hill!", "image": "https://images.unsplash.com/photo-1552053831-71594a27632d?w=800&q=80", "verified": True, "medical": "Vaccinated"},
@@ -147,13 +134,13 @@ if 'pets_data' not in st.session_state:
         {"id": 7, "name": "Rocky", "age": "4 yrs", "species": "Dog", "breed": "Boxer", "distance": 15, "location": "Newtownabbey", "tags": ["Goofy", "Strong"], "bio": "Professional drooler and hugger.", "image": "https://images.unsplash.com/photo-1543071220-6ee5bf71a54e?w=800&q=80", "verified": True, "medical": "Vaccinated"},
         {"id": 8, "name": "Thumper", "age": "1 yr", "species": "Rabbit", "breed": "Lop Eared", "distance": 3, "location": "Belfast East", "tags": ["Quiet", "Hops"], "bio": "Loves carrots and wires (keep them safe!).", "image": "https://images.unsplash.com/photo-1585110396065-88b724108873?w=800&q=80", "verified": False, "medical": "Healthy"},
         {"id": 9, "name": "Bella", "age": "2 yrs", "species": "Dog", "breed": "Cockapoo", "distance": 20, "location": "Antrim", "tags": ["Hypoallergenic", "Cute"], "bio": "Loves everyone I meet!", "image": "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=800&q=80", "verified": True, "medical": "Vaccinated"},
-        {"id": 10, "name": "Shadow", "age": "6 yrs", "species": "Cat", "breed": "Bombay", "distance": 10, "location": "Dundonald", "tags": ["Mysterious", "Vocal"], "bio": "I am the night.", "image": "https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?w=800&q=80", "verified": True, "medical": "Healthy"},
+        {"id": 10, "name": "Shadow", "age": "6 yrs", "species": "Cat", "breed": "Black Cat", "distance": 10, "location": "Dundonald", "tags": ["Mysterious", "Vocal"], "bio": "I am the night.", "image": "https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?w=800&q=80", "verified": True, "medical": "Healthy"},
         {"id": 11, "name": "Max", "age": "5 mo", "species": "Dog", "breed": "German Shepherd", "distance": 25, "location": "Larne", "tags": ["Smart", "Puppy"], "bio": "Training to be the best boy.", "image": "https://images.unsplash.com/photo-1589941013453-ec89f33b5e95?w=800&q=80", "verified": False, "medical": "Vaccinated"},
         {"id": 12, "name": "Daisy", "age": "3 yrs", "species": "Dog", "breed": "Beagle", "distance": 30, "location": "Ballymena", "tags": ["Howler", "Foodie"], "bio": "Will follow nose to food.", "image": "https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?w=800&q=80", "verified": True, "medical": "Healthy"},
         {"id": 13, "name": "Simba", "age": "2 yrs", "species": "Cat", "breed": "Ginger Tabby", "distance": 4, "location": "Belfast South", "tags": ["King", "Orange"], "bio": "One brain cell, lots of love.", "image": "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=800&q=80", "verified": True, "medical": "Neutered"},
         {"id": 14, "name": "Cooper", "age": "7 yrs", "species": "Dog", "breed": "Spaniel", "distance": 50, "location": "Coleraine", "tags": ["Water Dog", "Loyal"], "bio": "Beach days are my favorite.", "image": "https://images.unsplash.com/photo-1529429612779-c8e40df2b54c?w=800&q=80", "verified": True, "medical": "Arthritis managed"},
         {"id": 15, "name": "Pip", "age": "1 yr", "species": "Hamster", "breed": "Syrian", "distance": 1, "location": "Belfast West", "tags": ["Tiny", "Runner"], "bio": "Night owl. Loves my wheel.", "image": "https://images.unsplash.com/photo-1425082661705-1834bfd09dca?w=800&q=80", "verified": False, "medical": "Healthy"},
-        {"id": 16, "name": "Nala", "age": "4 yrs", "species": "Dog", "breed": "Pitbull Mix", "distance": 8, "location": "Castlereagh", "tags": ["Sweet", "Smile"], "bio": "Misunderstood velvet hippo.", "image": "https://images.unsplash.com/photo-1570824104453-508955ab713e?w=800&q=80", "verified": True, "medical": "Vaccinated"},
+        {"id": 16, "name": "Nala", "age": "4 yrs", "species": "Dog", "breed": "Staffy Mix", "distance": 8, "location": "Castlereagh", "tags": ["Sweet", "Smile"], "bio": "Misunderstood velvet hippo.", "image": "https://images.unsplash.com/photo-1570824104453-508955ab713e?w=800&q=80", "verified": True, "medical": "Vaccinated"},
         {"id": 17, "name": "Oliver", "age": "2 mo", "species": "Cat", "breed": "Siamese Mix", "distance": 18, "location": "Carrickfergus", "tags": ["Baby", "Blue Eyes"], "bio": "Need constant attention.", "image": "https://images.unsplash.com/photo-1513245543132-31f507417b26?w=800&q=80", "verified": True, "medical": "First shots"},
         {"id": 18, "name": "Bear", "age": "9 yrs", "species": "Dog", "breed": "Newfoundland", "distance": 40, "location": "Omagh", "tags": ["Huge", "Fluffy"], "bio": "I'm basically a rug that eats.", "image": "https://images.unsplash.com/photo-1546527868-ccb7ee7dfa6a?w=800&q=80", "verified": True, "medical": "Healthy"},
         {"id": 19, "name": "Cleo", "age": "3 yrs", "species": "Cat", "breed": "Sphynx", "distance": 6, "location": "Belfast City", "tags": ["Hairless", "Warm"], "bio": "I feel like warm suede. Cuddle me.", "image": "https://images.unsplash.com/photo-1516280030429-27679b3dc9cf?w=800&q=80", "verified": True, "medical": "Skin care needed"},
@@ -470,33 +457,23 @@ def render_nav_bar():
 
 # --- MAIN APP ROUTER ---
 
-col_spacer1, col_main, col_spacer2 = st.columns([1, 6, 1])
-
-with col_main:
-    st.markdown('<div class="responsive-container">', unsafe_allow_html=True)
+# We remove the columns logic for the layout and just rely on the block-container styling
+if st.session_state.view == 'auth' or st.session_state.user is None:
+    render_auth()
+else:
+    render_nav_bar()
     
-    if st.session_state.view == 'auth' or st.session_state.user is None:
-        render_auth()
-    else:
-        # 1. Custom Navigation Bar (Top)
-        # We put it at top or bottom. Mobile apps often have bottom nav, but top is cleaner in Streamlit web view.
-        # Let's try top for clarity.
-        render_nav_bar()
+    if st.session_state.active_tab == 'Match':
+        with st.expander("Filter Settings"):
+            species = st.radio("Species", ["All", "Dog", "Cat", "Rabbit", "Hamster"], horizontal=True)
+            dist = st.slider("Distance", 1, 100, 50)
+        render_swipe_deck({"species": species, "distance": dist})
+    
+    elif st.session_state.active_tab == 'Care':
+        render_care()
         
-        # 2. Content Area
-        if st.session_state.active_tab == 'Match':
-            with st.expander("Filter Settings"):
-                species = st.radio("Species", ["All", "Dog", "Cat", "Rabbit", "Hamster"], horizontal=True)
-                dist = st.slider("Distance", 1, 100, 50)
-            render_swipe_deck({"species": species, "distance": dist})
+    elif st.session_state.active_tab == 'Chat':
+        render_chat()
         
-        elif st.session_state.active_tab == 'Care':
-            render_care()
-            
-        elif st.session_state.active_tab == 'Chat':
-            render_chat()
-            
-        elif st.session_state.active_tab == 'Profile':
-            render_profile()
-            
-    st.markdown('</div>', unsafe_allow_html=True)
+    elif st.session_state.active_tab == 'Profile':
+        render_profile()
